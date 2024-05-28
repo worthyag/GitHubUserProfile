@@ -1,28 +1,44 @@
-const url = "https://api.github.com/users/kamranahmedse";
-
-fetch(url).then(
-  function(request) {
-    if (request.status !== 200) {
-      console.log(`Looks like there was a problem.\nStatus Code: ${request.status}`);
+const search = document.querySelector("#searchbar");
+search.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    if (search.value)
+      updateProfile(search.value)
+    else {
+      clearProfile();
     }
 
-    request.json().then(
-      function(data) {
-        console.log(data);
-        buildProfile(data);
-      }
-    )
+  }
+})
 
-    return;
-  }
-).catch(
-  function(err) {
-    console.log(`The following error was found: ${err}`);
-  }
-);
+
+function updateProfile(search) {
+  let url = "https://api.github.com/users/";
+  url += search;
+
+  fetch(url).then(
+    function(request) {
+      if (request.status !== 200) {
+        console.log(`Looks like there was a problem.\nStatus Code: ${request.status}`);
+        return;
+      }
+  
+      request.json().then(
+        function(data) {
+          console.log(data);
+          buildProfile(data);
+        }
+      )
+    }
+  ).catch(
+    function(err) {
+      console.log(`The following error was found: ${err}`);
+    }
+  );
+}
 
 function buildProfile(profileData) {
   const container = document.querySelector(".container");
+  clearProfile();
   const profile = document.createElement("div");
 
   // Name
@@ -50,6 +66,16 @@ function buildProfile(profileData) {
     const twitter = createSection(`@${profileData.twitter_username}`, 't', "twitter", "twitter: ");
     profile.appendChild(twitter);
   }
+
+  // Link
+  const link = document.createElement("p");
+  const a = document.createElement("a");
+  a.innerText = "here";
+  a.href = `https://www.github.com/${profileData.login}`;
+  a.target = "_blank";
+  link.innerText = "View profile ";
+  link.appendChild(a);
+  profile.appendChild(link);
 
   profile.classList.add("profile");
   container.appendChild(profile);
@@ -104,4 +130,11 @@ function createSection(value, type, className, key=null) {
   }
 
   return div;
+}
+
+function clearProfile() {
+  const profile = document.querySelector(".profile");
+
+  if (profile)
+    profile.remove();
 }

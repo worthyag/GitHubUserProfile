@@ -44,6 +44,17 @@ html {
 
 }
 
-// h1.name {
-//   display: flex;
-// }
+@media screen and (max-width: 300px) {
+  .container {
+    div.search {
+      input {
+        width: 80vw;
+      }
+    }
+  }
+}
+@media screen and (max-width: 468px) {
+  .container {
+    margin: 0 8px;
+  }
+}
