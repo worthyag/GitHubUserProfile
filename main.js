@@ -1,4 +1,4 @@
-const url = "https://api.github.com/userkamranahmedse";
+const url = "https://api.github.com/users/kamranahmedse";
 
 fetch(url).then(
   function(request) {
@@ -21,5 +21,5 @@ fetch(url).then(
 );
 
 function buildProfile(profileData) {
-  
+
 }
